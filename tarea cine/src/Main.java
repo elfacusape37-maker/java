@@ -1,0 +1,172 @@
+import java.util.Scanner;
+
+class Cine {
+
+    static Scanner teclado = new Scanner(System.in);
+
+    static String[][] nombres = new String[10][10];
+    static String[][] telefonos = new String[10][10];
+
+    public static void main(String[] args) {
+
+        int opcion;
+
+        do {
+            System.out.println();
+            System.out.println("       SISTEMA DE CINE");
+            System.out.println("==============================");
+            System.out.println("1. Ver mapa de asientos");
+            System.out.println("2. Reservar asiento");
+            System.out.println("3. Eliminar reserva");
+            System.out.println("4. Salir");
+            System.out.print("Ingrese una opcion: ");
+
+            opcion = teclado.nextInt();
+            teclado.nextLine();
+
+            switch (opcion) {
+
+                case 1:
+                    mostrarMapa();
+                    break;
+
+                case 2:
+                    reservarAsiento();
+                    break;
+
+                case 3:
+                    eliminarReserva();
+                    break;
+
+                case 4:
+                    System.out.println("Gracias por utilizar el sistema =)");
+                    break;
+
+                default:
+                    System.out.println("Opcion incorrecta.");
+            }
+
+        } while (opcion != 4);
+    }
+
+
+
+    public static void mostrarMapa() {
+
+        System.out.println("========== MAPA DEL CINE ==========");
+        System.out.println("     1 2 3 4 5 6 7 8 9 10");
+        System.out.println("    -----------------------");
+
+        for (int fila = 0; fila < 10; fila++) {
+
+            System.out.printf("%2d | ", fila + 1);
+
+            for (int asiento = 0; asiento < 10; asiento++) {
+
+                if (nombres[fila][asiento] == null) {
+                    System.out.print("O ");
+                } else {
+                    System.out.print("X ");
+                }
+            }
+
+            System.out.println();
+        }
+
+        System.out.println("O = Disponible");
+        System.out.println("X = Reservado");
+    }
+
+
+
+    public static void reservarAsiento() {
+
+        mostrarMapa();
+
+        System.out.print("Ingrese la fila (1-10): ");
+        int fila = teclado.nextInt();
+
+        System.out.print("Ingrese el numero de asiento (1-10): ");
+        int asiento = teclado.nextInt();
+
+        teclado.nextLine();
+
+
+        if (fila < 1 || fila > 10 || asiento < 1 || asiento > 10) {
+            System.out.println("La ubicacion ingresada no es valida.");
+            return;
+        }
+
+
+        int f = fila - 1;
+        int a = asiento - 1;
+
+
+        if (nombres[f][a] != null) {
+
+            System.out.println("El asiento ya esta reservado =(");
+            System.out.println("Reservado por: " + nombres[f][a]);
+            System.out.println("Telefono: " + telefonos[f][a]);
+
+            return;
+        }
+
+
+        System.out.print("Ingrese el nombre del cliente: ");
+        String nombre = teclado.nextLine();
+
+        System.out.print("Ingrese el telefono del cliente: ");
+        String telefono = teclado.nextLine();
+
+
+        nombres[f][a] = nombre;
+        telefonos[f][a] = telefono;
+
+        System.out.println("Reserva realizada correctamente.");
+        System.out.println("Cliente: " + nombre);
+        System.out.println("Fila: " + fila);
+        System.out.println("Asiento: " + asiento);
+    }
+
+
+
+    public static void eliminarReserva() {
+
+        mostrarMapa();
+
+        System.out.print("Ingrese la fila de la reserva: ");
+        int fila = teclado.nextInt();
+
+        System.out.print("Ingrese el numero de asiento: ");
+        int asiento = teclado.nextInt();
+
+        teclado.nextLine();
+
+
+        if (fila < 1 || fila > 10 || asiento < 1 || asiento > 10) {
+            System.out.println("La ubicacion ingresada no es valida.");
+            return;
+        }
+
+        int f = fila - 1;
+        int a = asiento - 1;
+
+
+        if (nombres[f][a] == null) {
+
+            System.out.println("Ese asiento no tiene ninguna reserva.");
+
+        } else {
+
+            System.out.println("Reserva encontrada.");
+            System.out.println("Cliente: " + nombres[f][a]);
+
+
+            nombres[f][a] = null;
+            telefonos[f][a] = null;
+
+            System.out.println("La reserva fue eliminada correctamente.");
+            System.out.println("El asiento vuelve a estar disponible.");
+        }
+    }
+}
